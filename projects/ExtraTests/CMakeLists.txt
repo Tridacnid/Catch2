@@ -123,7 +123,7 @@ add_test(NAME BenchmarkingMacros COMMAND BenchmarkingMacros -r console -s)
 set_tests_properties(
     BenchmarkingMacros
   PROPERTIES
-    PASS_REGULAR_EXPRESSION "benchmark name                                  samples       iterations    estimated"
+    PASS_REGULAR_EXPRESSION "benchmark name[\\r\\n\\t ]+samples[\\r\\n\\t ]+iterations[\\r\\n\\t ]+estimated"
 )
 
 # This test touches windows.h, so it should only be compiled under msvc
@@ -137,6 +137,14 @@ if (MSVC)
     add_test(NAME WindowsHeader COMMAND WindowsHeader -r compact)
 endif()
 
+add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
+add_test(NAME DebugBreakMacros COMMAND DebugBreakMacros --break)
+set_tests_properties(
+    DebugBreakMacros
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Pretty please, break into debugger"
+)
+
 set( EXTRA_TEST_BINARIES
     PrefixedMacros
     DisabledMacros
@@ -145,6 +153,7 @@ set( EXTRA_TEST_BINARIES
     FallbackStringifier
     DisableStringification
     BenchmarkingMacros
+    DebugBreakMacros
 )
 
 # Shared config
